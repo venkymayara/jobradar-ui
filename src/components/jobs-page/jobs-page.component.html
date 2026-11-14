@@ -1,0 +1,7 @@
+<section class="page">
+  <div class="intro"><span>JOBRADAR OPPORTUNITIES</span><h1>Find your next opportunity</h1><p>Search jobs shared by the community.</p></div>
+  <app-job-search [keyword]="keyword" [location]="location" (search)="onSearch($event)"/>
+  <div class="layout"><app-job-filter-sidebar [selectedFilters]="filters" (filtersChange)="onFilters($event)"/>
+    <app-job-results [opportunities]="opportunities" [page]="page + 1" [totalPages]="totalPages" [loading]="loading" [error]="error" (pageChange)="onPageChange($event)" (sortChange)="onSortChange($event)"/>
+  </div>
+</section>

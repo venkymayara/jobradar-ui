@@ -1,0 +1,7 @@
+<section class="section tinted">
+  <div class="heading"><div><span class="eyebrow">MEET RECRUITERS IN PERSON</span><h2>Upcoming walk-in drives</h2><p>Don't miss hiring events happening near you.</p></div><a routerLink="/walk-in-drives">See all drives →</a></div>
+  @if (loading) { <p role="status" class="state">Loading upcoming drives…</p> }
+  @else if (error) { <p role="alert" class="state error">{{ error }}</p> }
+  @else if (drives.length) { <div class="list">@for (drive of drives.slice(0, 2); track drive.opportunityId) {<app-walk-in-card [drive]="drive"/>}</div> }
+  @else { <p class="state">No upcoming walk-in drives are listed.</p> }
+</section>

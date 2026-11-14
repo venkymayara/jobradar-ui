@@ -1,0 +1,5 @@
+<a class="card" [routerLink]="['/jobs']" [queryParams]="{ role: category.slug }">
+  <span class="icon">{{ category.icon || '✦' }}</span><span class="title">{{ category.categoryName }}</span>
+  <span class="description">{{ category.description || 'Explore opportunities in this category.' }}</span>
+  <span class="count">{{ category.opportunityCount }} openings <b>→</b></span>
+</a>

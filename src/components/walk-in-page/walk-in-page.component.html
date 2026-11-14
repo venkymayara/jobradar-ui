@@ -1,0 +1,9 @@
+<section class="page"><div class="intro"><span>IN-PERSON HIRING EVENTS</span><h1>Walk-in drives</h1><p>Find upcoming hiring drives, dates and venues in one place.</p></div>
+  <app-walk-in-filter (filtersChange)="filterDrives($event)"/>
+  <div class="layout"><div class="list">
+    @if (loading) { <p role="status">Loading walk-in drives…</p> }
+    @else if (error) { <div class="empty" role="alert">{{ error }}</div> }
+    @else if (filtered.length) {@for (drive of filtered; track drive.opportunityId) {<app-walk-in-card [drive]="drive"/>}}
+    @else {<div class="empty">No walk-in drives match these filters.</div>}
+  </div><app-walk-in-calendar [drives]="filtered"/></div>
+</section>

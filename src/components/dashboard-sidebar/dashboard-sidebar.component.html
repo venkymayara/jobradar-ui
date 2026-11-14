@@ -1,0 +1,10 @@
+<aside>
+  <h3>Workspace</h3>
+  @if (user(); as account) { <p class="account">{{ account.displayName }}</p> }
+  @else if (error()) { <p class="account error" role="alert">{{ error() }}</p> }
+  <a routerLink="/dashboard" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">Overview</a>
+  <a routerLink="/dashboard/my-posts" routerLinkActive="active">My opportunities</a>
+  <a routerLink="/dashboard/saved" routerLinkActive="active">Saved jobs</a>
+  <a routerLink="/dashboard/profile" routerLinkActive="active">My profile</a>
+  <a routerLink="/dashboard/preferences" routerLinkActive="active">Preferences</a>
+</aside>

@@ -1,0 +1,7 @@
+<aside class="panel">
+  <div class="title"><strong>Filters</strong><button type="button" (click)="reset()">Clear all</button></div>
+  <label>Work mode<select [(ngModel)]="filters.workMode" name="workMode" (change)="apply()"><option value="">Any</option><option value="ON_SITE">On-site</option><option value="HYBRID">Hybrid</option><option value="REMOTE">Remote</option></select></label>
+  <label>Experience<select [(ngModel)]="filters.experience" name="experience" (change)="apply()"><option value="">Any experience</option><option value="0-2">0–2 years</option><option value="2-4">2–4 years</option><option value="3-5">3–5 years</option><option value="5-10">5+ years</option></select></label>
+  <label>Employment type<select [(ngModel)]="filters.employmentType" name="employmentType" (change)="apply()"><option value="">Any type</option><option value="FULL_TIME">Full-time</option><option value="PART_TIME">Part-time</option><option value="CONTRACT">Contract</option><option value="INTERNSHIP">Internship</option><option value="TEMPORARY">Temporary</option></select></label>
+  <label>Opportunity type<select [(ngModel)]="filters.opportunityType" name="opportunityType" (change)="apply()"><option value="">All opportunities</option><option value="JOB">Jobs</option><option value="WALK_IN">Walk-ins</option><option value="INTERNSHIP">Internships</option><option value="REFERRAL">Referrals</option></select></label>
+</aside>

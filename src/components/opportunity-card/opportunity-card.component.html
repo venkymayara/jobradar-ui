@@ -1,0 +1,6 @@
+<article class="card">
+  <div class="top"><div><h3><a [routerLink]="['/jobs', opportunity.opportunityId]">{{ opportunity.title }}</a></h3><p class="company">{{ opportunity.companyName }}</p></div><span class="badge">{{ opportunity.workMode.replace('_', ' ') }}</span></div>
+  <div class="meta"><span>⌖ {{ opportunity.location }}</span><span>◷ {{ experienceLabel }}</span><span>{{ opportunity.publishedAt | date:'mediumDate' }}</span></div>
+  <div class="skills">@for (skill of opportunity.skills; track skill.skillId) {<span>{{ skill.skillName }}</span>}</div>
+  <div class="bottom"><strong>{{ salaryLabel }}</strong><a [routerLink]="['/jobs', opportunity.opportunityId]">View details →</a></div>
+</article>

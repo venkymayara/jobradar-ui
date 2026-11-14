@@ -1,0 +1,6 @@
+<app-hero-search/>
+<app-role-categories [categories]="home()?.categories ?? []" [loading]="loading()" [error]="error()"/>
+<app-latest-opportunities [jobs]="home()?.latestOpportunities ?? []" [loading]="loading()" [error]="error()"/>
+<app-walk-in-preview [drives]="home()?.upcomingWalkIns ?? []" [loading]="loading()" [error]="error()"/>
+<app-popular-skills [skills]="home()?.popularSkills ?? []" [loading]="loading()" [error]="error()"/>
+<app-community-cta/>

@@ -1,0 +1,7 @@
+<section class="section" id="roles">
+  <div class="heading"><div><span class="eyebrow">EXPLORE BY SPECIALIZATION</span><h2>Find your role</h2><p>Explore opportunities across the most in-demand technology domains.</p></div><a routerLink="/jobs">Browse all roles →</a></div>
+  @if (loading) { <p class="state" role="status">Loading categories…</p> }
+  @else if (error) { <p class="state error" role="alert">{{ error }}</p> }
+  @else if (categories.length) { <div class="grid">@for (category of categories; track category.categoryId) {<app-role-card [category]="category"/>}</div> }
+  @else { <p class="state">No categories are available yet.</p> }
+</section>

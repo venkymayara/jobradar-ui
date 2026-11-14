@@ -1,0 +1,10 @@
+<div class="results">
+  @if (loading) { <p role="status" class="state">Loading opportunities…</p> }
+  @else if (error) { <div role="alert" class="empty"><h3>Couldn’t load opportunities</h3><p>{{ error }}</p></div> }
+  @else {
+    <div class="result-heading"><strong>{{ opportunities.length }} opportunities</strong><label>Sort by
+      <select aria-label="Sort opportunities" (change)="onSort($event)"><option value="publishedAt,desc">Newest</option><option value="publishedAt,asc">Oldest</option><option value="title,asc">Title A–Z</option></select></label></div>
+    @if (opportunities.length) { <div class="list">@for (job of opportunities; track job.opportunityId) {<app-opportunity-card [opportunity]="job"/>}</div><app-pagination [page]="page" [totalPages]="totalPages" (pageChange)="pageChange.emit($event)"/> }
+    @else { <div class="empty"><h3>No matching opportunities</h3><p>Try changing your search or filters.</p></div> }
+  }
+</div>

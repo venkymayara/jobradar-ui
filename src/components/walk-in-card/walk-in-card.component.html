@@ -1,0 +1,10 @@
+<article class="card">
+  <div class="date">{{ drive.driveDate | date:'mediumDate' }}</div>
+  <div class="content"><h3><a [routerLink]="['/walk-in-drives', drive.opportunityId]">{{ drive.title }}</a></h3>
+    <p class="company">{{ drive.companyName }}</p>
+    <div class="meta"><span>⌖ {{ drive.location }}</span><span>◷ {{ drive.startTime }}–{{ drive.endTime }}</span><span>{{ drive.minExperience }}–{{ drive.maxExperience }} years</span></div>
+    <p class="venue">{{ drive.venue }} · {{ drive.venueAddress }}</p>
+    <div class="skills">@for (skill of drive.skills; track skill.skillId) {<span>{{ skill.skillName }}</span>}</div>
+    <a class="details" [routerLink]="['/walk-in-drives', drive.opportunityId]">View drive details →</a>
+  </div>
+</article>
