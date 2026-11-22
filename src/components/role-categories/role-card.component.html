@@ -1,0 +1,15 @@
+<a
+  class="card surface"
+  [routerLink]="['/jobs']"
+  [queryParams]="{ categoryId: category.categoryId }"
+>
+  <span class="icon">{{ category.icon || '✦' }}</span>
+  <span class="title">{{ category.categoryName }}</span>
+  <span class="description">
+    {{ category.description || 'Explore opportunities in this category.' }}
+  </span>
+  <span class="count">
+    {{ category.opportunityCount }} {{ category.opportunityCount === 1 ? 'opening' : 'openings' }}
+    <b>→</b>
+  </span>
+</a>

@@ -1,1 +1,25 @@
-.result-heading{display:flex;justify-content:space-between;color:#475569;font-size:13px;margin:5px 0 16px}.result-heading span{color:#94a3b8}.list{display:grid;gap:13px}.empty{background:#fff;border:1px dashed #cbd5e1;border-radius:12px;padding:40px;text-align:center;color:#64748b}.empty h3{color:#17243d}
+.result-heading {
+  display: flex;
+  justify-content: space-between;
+  color: #475569;
+  font-size: 13px;
+  margin: 5px 0 16px;
+}
+.result-heading span {
+  color: #94a3b8;
+}
+.list {
+  display: grid;
+  gap: 13px;
+}
+.empty {
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
+}
+.empty h3 {
+  color: #17243d;
+}

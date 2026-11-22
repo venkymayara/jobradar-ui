@@ -1,7 +1,101 @@
-<section class="page">
-  <div class="intro"><span>JOBRADAR OPPORTUNITIES</span><h1>Find your next opportunity</h1><p>Search jobs shared by the community.</p></div>
-  <app-job-search [keyword]="keyword" [location]="location" (search)="onSearch($event)"/>
-  <div class="layout"><app-job-filter-sidebar [selectedFilters]="filters" (filtersChange)="onFilters($event)"/>
-    <app-job-results [opportunities]="opportunities" [page]="page + 1" [totalPages]="totalPages" [loading]="loading" [error]="error" (pageChange)="onPageChange($event)" (sortChange)="onSortChange($event)"/>
+<section class="browse-page">
+  <div class="browse-intro">
+    <h1>Find your next opportunity</h1>
+    <p>Search community opportunities and openings across India.</p>
   </div>
+  <div class="search-bar">
+    <app-job-search [keyword]="keyword" [location]="location" (search)="onSearch($event)" />
+    <button
+      type="button"
+      class="outlined filter-toggle"
+      aria-controls="job-filters"
+      [attr.aria-expanded]="filtersOpen()"
+      (click)="filtersOpen.update((open) => !open)"
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <path d="M4 7h16M7 12h10M10 17h4" />
+      </svg>
+      Filters
+    </button>
+  </div>
+  <div class="layout" [class.filters-open]="filtersOpen()">
+    <div id="job-filters" [hidden]="!filtersOpen()">
+      <app-job-filter-sidebar [selectedFilters]="filters" (filtersChange)="onFilters($event)" />
+    </div>
+    <app-job-results
+      [opportunities]="opportunities"
+      [page]="page + 1"
+      [total]="totalElements"
+      [pageSize]="size"
+      [loading]="loading"
+      [error]="error"
+      (pageChange)="onPageChange($event)"
+      (sortChange)="onSortChange($event)"
+    />
+  </div>
+</section>
+<section class="external-section" aria-labelledby="india-jobs-title">
+  <div class="browse-intro">
+    <h2 id="india-jobs-title">Jobs in India</h2>
+    <p>Openings from employer career boards and job feeds. Apply on the original listing.</p>
+    <div class="location-presets" role="group" aria-label="Job location">
+      <button
+        type="button"
+        class="outlined"
+        [attr.aria-pressed]="!location"
+        (click)="onLocationPreset('')"
+      >
+        All India
+      </button>
+      <button
+        type="button"
+        class="outlined"
+        [attr.aria-pressed]="location.trim().toLowerCase() === 'hyderabad'"
+        (click)="onLocationPreset('Hyderabad')"
+      >
+        Hyderabad
+      </button>
+    </div>
+  </div>
+  @let listings = indiaJobs();
+  @if (listings === undefined) {
+    <p class="state" role="status">Loading jobs from external sources…</p>
+  } @else if (listings === null) {
+    <p class="state" role="status">External job listings are temporarily unavailable.</p>
+  } @else if (listings.length) {
+    <p class="listing-count" role="status">
+      {{ listings.length }} matching {{ listings.length === 1 ? 'job' : 'jobs' }}
+    </p>
+    <div class="external-list">
+      @for (job of visibleIndiaJobs(); track job.provider + ':' + job.externalId) {
+        <app-external-job-card [job]="job" />
+      }
+    </div>
+    @if (listings.length > externalPageSize) {
+      <app-pagination
+        [page]="indiaPage()"
+        [length]="listings.length"
+        [pageSize]="externalPageSize"
+        label="External job pages"
+        (pageChange)="indiaPage.set($event)"
+      />
+    }
+  } @else {
+    <p class="state" role="status">
+      {{
+        indiaTotal()
+          ? 'No jobs match your search or filters.'
+          : 'No external jobs are currently listed.'
+      }}
+    </p>
+  }
 </section>

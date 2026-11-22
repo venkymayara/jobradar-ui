@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
 import { Opportunity } from '../models/opportunity.model';
 import { Skill } from '../models/skill.model';
@@ -16,10 +16,7 @@ export interface HomeData {
 @Injectable({ providedIn: 'root' })
 export class HomeService {
   private readonly api = inject(ApiService);
-  private cachedHome?: Observable<HomeData>;
-
   getHomeData(): Observable<HomeData> {
-    this.cachedHome ??= this.api.get<HomeData>('/home').pipe(shareReplay({ bufferSize: 1, refCount: true }));
-    return this.cachedHome;
+    return this.api.get<HomeData>('/home');
   }
 }

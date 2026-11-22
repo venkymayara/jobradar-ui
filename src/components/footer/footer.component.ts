@@ -6,6 +6,8 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  styleUrl: './footer.component.scss',
 })
-export class FooterComponent { readonly year = new Date().getFullYear(); }
+export class FooterComponent {
+  readonly year = new Date().getFullYear();
+}

@@ -1,0 +1,49 @@
+<section class="auth-page">
+  <div class="auth-card surface">
+    <h1 class="page-title">Log in to JobRadar</h1>
+    <p class="intro">Keep track of opportunities and manage your profile.</p>
+    @if (registered) {
+      <p class="success" role="status">Account created. You can log in now.</p>
+    }
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    <form class="fields" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        Email
+        <input type="email" formControlName="email" autocomplete="email" />
+      </label>
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field-error">Enter a valid email address.</small>
+      }
+      <label>
+        Password
+        <div class="password-field">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="outlined"
+            (click)="showPassword.update((value) => !value)"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+          >
+            {{ showPassword() ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </label>
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <small class="field-error">Password must be at least 8 characters.</small>
+      }
+      <button type="submit" [disabled]="loading()">
+        {{ loading() ? 'Logging in…' : 'Log in' }}
+      </button>
+    </form>
+    <p class="switch">
+      New to JobRadar?
+      <a routerLink="/register">Create an account</a>
+    </p>
+  </div>
+</section>

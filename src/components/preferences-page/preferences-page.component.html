@@ -1,0 +1,49 @@
+<section class="dashboard-page surface" aria-labelledby="preferences-heading">
+  <header class="dashboard-heading">
+    <h1 class="page-title" id="preferences-heading">Preferences</h1>
+    <p>Choose which updates you’d like to receive.</p>
+  </header>
+
+  @if (loading()) {
+    <p class="state" role="status">Loading preferences…</p>
+  } @else if (loadError()) {
+    <div class="state" role="alert">
+      <p>{{ loadError() }}</p>
+      <button matButton="outlined" type="button" (click)="load()">Try again</button>
+    </div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <fieldset [disabled]="saving()">
+        <legend>Notification preferences</legend>
+        <div class="setting">
+          <span>
+            <strong id="email-notifications">Email notifications</strong>
+            <small>Account and moderation updates by email when email delivery is available.</small>
+          </span>
+          <mat-slide-toggle
+            formControlName="emailNotificationsEnabled"
+            aria-labelledby="email-notifications"
+          />
+        </div>
+        <div class="setting">
+          <span>
+            <strong id="job-alerts">Job alerts</strong>
+            <small>Save your preference for relevant opportunity alerts.</small>
+          </span>
+          <mat-slide-toggle formControlName="jobAlertsEnabled" aria-labelledby="job-alerts" />
+        </div>
+      </fieldset>
+      <div class="actions">
+        <button matButton="filled" type="submit" [disabled]="saving() || form.pristine">
+          {{ saving() ? 'Saving…' : 'Save preferences' }}
+        </button>
+        @if (message()) {
+          <p class="success" role="status">{{ message() }}</p>
+        }
+        @if (error()) {
+          <p class="error" role="alert">{{ error() }}</p>
+        }
+      </div>
+    </form>
+  }
+</section>

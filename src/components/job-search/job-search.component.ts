@@ -6,11 +6,13 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './job-search.component.html',
-  styleUrl: './job-search.component.scss'
+  styleUrl: './job-search.component.scss',
 })
 export class JobSearchComponent {
   @Input() keyword = '';
   @Input() location = '';
   @Output() search = new EventEmitter<{ keyword: string; location: string }>();
-  submit(): void { this.search.emit({ keyword: this.keyword, location: this.location }); }
+  submit(): void {
+    this.search.emit({ keyword: this.keyword, location: this.location });
+  }
 }

@@ -8,12 +8,13 @@ import { PaginationComponent } from '../pagination/pagination.component';
   standalone: true,
   imports: [OpportunityCardComponent, PaginationComponent],
   templateUrl: './job-results.component.html',
-  styleUrl: './job-results.component.scss'
+  styleUrl: './job-results.component.scss',
 })
 export class JobResultsComponent {
   @Input() opportunities: Opportunity[] = [];
   @Input() page = 1;
-  @Input() totalPages = 1;
+  @Input() total = 0;
+  @Input() pageSize = 10;
   @Input() loading = false;
   @Input() error = '';
   @Output() pageChange = new EventEmitter<number>();

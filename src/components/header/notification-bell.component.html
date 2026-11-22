@@ -1,0 +1,12 @@
+@if (auth.isAuthenticated()) {
+  <a
+    matButton="outlined"
+    class="bell"
+    routerLink="/dashboard/notifications"
+    [matBadge]="count() > 99 ? '99+' : count()"
+    [matBadgeHidden]="!count()"
+    [attr.aria-label]="count() ? 'Notifications, ' + count() + ' unread' : 'Notifications'"
+  >
+    <app-icon name="bell" />
+  </a>
+}

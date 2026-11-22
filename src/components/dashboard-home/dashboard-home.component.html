@@ -1,14 +1,53 @@
-<div class="panel"><h2>Welcome to your dashboard</h2>
-  @if (loading()) { <p role="status">Loading your dashboard…</p> }
-  @else if (error()) { <p role="alert" class="error">{{ error() }}</p> }
-  @else if (summary(); as stats) {
-    <p>Your personal workspace shows your published opportunities, saved jobs and review activity.</p>
-    <div class="stats"><div><strong>{{ stats.publishedOpportunityCount }}</strong><span>My posts</span></div><div><strong>{{ stats.savedOpportunityCount }}</strong><span>Saved jobs</span></div><div><strong>{{ stats.pendingReportCount }}</strong><span>Pending reports</span></div></div>
+<section class="overview" aria-labelledby="dashboard-heading">
+  <div class="welcome">
+    <div>
+      <h1 id="dashboard-heading">
+        Welcome back{{
+          auth.currentUser()?.displayName ? ', ' + auth.currentUser()?.displayName : ''
+        }}
+      </h1>
+      <p>Track your submissions and pick up where you left off.</p>
+    </div>
+    <div class="dashboard-actions">
+      <a routerLink="/jobs" class="browse-link">Browse jobs</a>
+      <a routerLink="/submit-walk-in-drive" class="submit-link">Submit a walk-in drive</a>
+    </div>
+  </div>
+  @if (loading()) {
+    <p class="state" role="status">Loading your dashboard…</p>
+  } @else if (error()) {
+    <p class="state error" role="alert">{{ error() }}</p>
+  } @else if (summary(); as stats) {
+    <div class="stats">
+      <a routerLink="/dashboard/my-posts">
+        <app-icon name="posts" />
+        <span>Published opportunities</span>
+        <strong>{{ stats.publishedOpportunityCount }}</strong>
+      </a>
+      <a routerLink="/dashboard/my-posts">
+        <app-icon name="clock" />
+        <span>Pending review</span>
+        <strong>{{ stats.pendingOpportunityCount ?? 0 }}</strong>
+      </a>
+      <a routerLink="/dashboard/my-posts" [queryParams]="{ view: 'saved' }">
+        <app-icon name="bookmark" />
+        <span>Saved opportunities</span>
+        <strong>{{ stats.savedOpportunityCount }}</strong>
+      </a>
+      <a routerLink="/dashboard/reports">
+        <app-icon name="flag" />
+        <span>Open reports</span>
+        <strong>{{ stats.pendingReportCount }}</strong>
+      </a>
+    </div>
   }
-</div>
-<section class="recommended">
-  <h2>Opportunities to explore</h2>
-  @if (recommendationsError()) { <p role="alert">{{ recommendationsError() }}</p> }
-  @else if (recommendations().length) { <div class="list">@for (opportunity of recommendations(); track opportunity.opportunityId) {<app-opportunity-card [opportunity]="opportunity"/>}</div> }
-  @else if (!loading()) { <p>No recommendations are available right now.</p> }
+  @if (auth.isAdmin()) {
+    <a class="staff-link" routerLink="/dashboard/admin/review">
+      <span>
+        <strong>Opportunity review</strong>
+        <span>Open the queue for new submissions and follow-ups.</span>
+      </span>
+      <span aria-hidden="true">→</span>
+    </a>
+  }
 </section>

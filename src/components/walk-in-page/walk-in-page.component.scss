@@ -1,1 +1,26 @@
-.page{max-width:1200px;margin:45px auto;padding:0 24px}.intro span{font-size:10px;color:#2563eb;font-weight:800;letter-spacing:1.2px}h1{font-size:34px;color:#17243d;margin:8px 0}p{color:#718096}.layout{display:grid;grid-template-columns:1fr 280px;gap:22px}.list{display:grid;gap:14px;align-content:start}.empty{padding:35px;text-align:center;background:#fff;border:1px dashed #cbd5e1;border-radius:12px;color:#64748b}@media(max-width:800px){.layout{grid-template-columns:1fr}.layout app-walk-in-calendar{order:-1}}
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 22px;
+}
+.list {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+.empty {
+  padding: 35px;
+  text-align: center;
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
+}
+@media (max-width: 800px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .layout app-walk-in-calendar {
+    order: -1;
+  }
+}

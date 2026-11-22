@@ -1,10 +1,61 @@
-<aside>
-  <h3>Workspace</h3>
-  @if (user(); as account) { <p class="account">{{ account.displayName }}</p> }
-  @else if (error()) { <p class="account error" role="alert">{{ error() }}</p> }
-  <a routerLink="/dashboard" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">Overview</a>
-  <a routerLink="/dashboard/my-posts" routerLinkActive="active">My opportunities</a>
-  <a routerLink="/dashboard/saved" routerLinkActive="active">Saved jobs</a>
-  <a routerLink="/dashboard/profile" routerLinkActive="active">My profile</a>
-  <a routerLink="/dashboard/preferences" routerLinkActive="active">Preferences</a>
+<aside class="navigation">
+  @let user = auth.currentUser();
+  <div class="identity">
+    <span class="initial" aria-hidden="true">{{ (user?.displayName || 'J').charAt(0) }}</span>
+    <div class="identity-copy">
+      <strong>{{ user?.displayName || 'JobRadar' }}</strong>
+      <span>
+        {{
+          auth.isSuperAdmin()
+            ? 'Super Admin'
+            : auth.isAdmin()
+              ? 'Administrator'
+              : 'Member dashboard'
+        }}
+      </span>
+    </div>
+  </div>
+  <mat-nav-list aria-label="Dashboard navigation">
+    @for (link of links; track link.path) {
+      <a
+        mat-list-item
+        [routerLink]="link.path ? ['/dashboard', link.path] : ['/dashboard']"
+        [routerLinkActiveOptions]="{ exact: !link.path }"
+        routerLinkActive="active"
+        #active="routerLinkActive"
+        [activated]="active.isActive"
+        ariaCurrentWhenActive="page"
+      >
+        <app-icon matListItemIcon [name]="link.icon" />
+        <span matListItemTitle>{{ link.label }}</span>
+      </a>
+    }
+  </mat-nav-list>
+  @if (auth.isAdmin()) {
+    <mat-nav-list class="admin" aria-label="Administration">
+      <span matSubheader>Administration</span>
+      <a
+        mat-list-item
+        routerLink="/dashboard/admin/review"
+        routerLinkActive="active"
+        #review="routerLinkActive"
+        [activated]="review.isActive"
+        ariaCurrentWhenActive="page"
+      >
+        <app-icon matListItemIcon name="shield" />
+        <span matListItemTitle>Opportunity review</span>
+      </a>
+      <a
+        mat-list-item
+        routerLink="/dashboard/admin/users"
+        routerLinkActive="active"
+        #users="routerLinkActive"
+        [activated]="users.isActive"
+        ariaCurrentWhenActive="page"
+      >
+        <app-icon matListItemIcon name="users" />
+        <span matListItemTitle>User administration</span>
+      </a>
+    </mat-nav-list>
+  }
 </aside>

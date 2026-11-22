@@ -1,1 +1,59 @@
-.page{max-width:1200px;margin:45px auto;padding:0 24px}.intro{margin-bottom:24px}.intro span{font-size:10px;color:#2563eb;font-weight:800;letter-spacing:1.2px}h1{font-size:34px;color:#17243d;margin:8px 0}p{color:#718096}.layout{display:grid;grid-template-columns:245px 1fr;gap:22px;margin-top:25px}@media(max-width:700px){.layout{grid-template-columns:1fr}h1{font-size:28px}}
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+.search-bar app-job-search {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+.filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  margin-top: 25px;
+}
+@media (min-width: 701px) {
+  .layout.filters-open {
+    grid-template-columns: 245px minmax(0, 1fr);
+  }
+}
+.external-section {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 24px;
+}
+.external-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.listing-count {
+  color: var(--muted);
+}
+.location-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.location-presets button[aria-pressed='true'] {
+  background: #eff6ff;
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}
+.external-section app-pagination {
+  display: block;
+  margin-top: 1.25rem;
+}
+@media (max-width: 800px) {
+  .external-list {
+    grid-template-columns: 1fr;
+  }
+}

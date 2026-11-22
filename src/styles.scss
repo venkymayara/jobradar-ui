@@ -1,6 +1,316 @@
+@use '@angular/material' as mat;
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-:root { font-family: 'Inter', Arial, sans-serif; color: #17243d; background: #fff; font-synthesis: none; }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; }
-button, input, select { font-family: inherit; }
+
+:root {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$blue-palette,
+      ),
+      typography: Inter,
+      density: 0,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-height: 44px,
+      outlined-container-height: 44px,
+      text-container-height: 44px,
+      filled-container-shape: 10px,
+      outlined-container-shape: 10px,
+      text-container-shape: 10px,
+    )
+  );
+
+  font-family: 'Inter', Arial, sans-serif;
+  font-synthesis: none;
+  line-height: 1.5;
+  color: var(--text);
+  --text: #17243d;
+  --label: #334155;
+  --muted: #64748b;
+  --canvas: #f8fafc;
+  --surface: #fff;
+  --border: #dbe3ef;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger: #b42318;
+  --success: #147a4b;
+  --focus: #93c5fd;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --surface-padding: clamp(1rem, 3vw, 1.75rem);
+  --control-height: 44px;
+  --control-font: 0.875rem;
+  --page-title-size: clamp(1.45rem, 3vw, 1.85rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--canvas);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--surface-padding);
+}
+
+.page-title {
+  margin: 0;
+  font-size: var(--page-title-size);
+}
+
+.dashboard-page {
+  box-shadow: 0 4px 18px #17243d08;
+}
+
+.dashboard-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem 1.2rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard-heading p {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.dashboard-state,
+.dashboard-page > .state {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+}
+
+.dashboard-page > .state[role='alert'] {
+  color: var(--danger);
+}
+
+.subtitle,
+.state {
+  color: var(--muted);
+}
+
+.browse-page {
+  width: min(1200px, calc(100% - 2rem));
+  margin: clamp(1.5rem, 4vw, 3rem) auto;
+}
+
+.browse-intro {
+  margin-bottom: 1.25rem;
+}
+
+.browse-intro h1,
+.browse-intro h2 {
+  margin: 0;
+}
+
+.browse-intro h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+}
+
+.browse-intro p {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+}
+
+label {
+  color: var(--label);
+  font-size: var(--control-font);
+  font-weight: 650;
+}
+
+.fields label {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+button:not(.mat-mdc-button-base, .mat-mdc-menu-item),
+input:not(.mat-mdc-input-element),
+select,
+textarea,
+.button {
+  font-family: inherit;
+  font-size: var(--control-font);
+}
+
+:where(button:not(.mat-mdc-button-base, .mat-mdc-menu-item), .button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-height);
+  padding: 0 1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+:where(button:not(:disabled, .mat-mdc-button-base, .mat-mdc-menu-item), .button):hover {
+  background: var(--primary-hover);
+}
+
+:where(button, .button).outlined {
+  background: var(--surface);
+  color: var(--label);
+  border-color: var(--border);
+}
+
+:where(button:not(:disabled), .button).outlined:hover {
+  background: #eff6ff;
+  color: var(--primary-hover);
+}
+
+:where(button, .button).secondary {
+  background: #eef2ff;
+  color: var(--primary-hover);
+}
+
+:where(button, .button).text {
+  background: transparent;
+  color: var(--primary-hover);
+}
+
+:where(button:not(:disabled), .button).text:hover {
+  background: #eff6ff;
+}
+
+:where(button, .button).danger {
+  background: var(--danger);
+}
+
+:where(button:not(:disabled), .button).danger:hover {
+  background: #912018;
+}
+
+button:disabled:not(.mat-mdc-button-base, .mat-mdc-menu-item) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+:where(
+  input:not([type='checkbox'], [type='radio'], .mat-mdc-input-element),
+  select,
+  textarea:not(.mat-mdc-input-element)
+) {
+  width: 100%;
+  min-height: var(--control-height);
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+}
+
+input[readonly]:not(.mat-mdc-input-element) {
+  background: var(--canvas);
+  color: var(--muted);
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: var(--primary);
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+:where(input, select, textarea).ng-invalid.ng-touched {
+  border-color: var(--danger);
+}
+
+.field-error {
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.error {
+  color: var(--danger);
+}
+
+.success {
+  color: var(--success);
+}
+
+.auth-page {
+  display: grid;
+  justify-items: center;
+  padding: clamp(1.5rem, 7vw, 4.5rem) 1rem;
+}
+
+.auth-card {
+  --surface-padding: clamp(1.25rem, 4vw, 2.25rem);
+  width: min(100%, 460px);
+}
+
+.auth-card .intro,
+.auth-card .switch {
+  color: var(--muted);
+}
+
+.auth-card form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.auth-card .switch {
+  text-align: center;
+  font-size: var(--control-font);
+}
+
+.auth-card .switch a {
+  color: var(--primary-hover);
+  font-weight: 700;
+}
+
+.password-field {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.password-field input {
+  min-width: 0;
+}

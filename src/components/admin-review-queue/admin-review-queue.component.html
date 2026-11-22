@@ -1,0 +1,76 @@
+<section class="dashboard-page surface" aria-labelledby="review-heading">
+  <header class="dashboard-heading">
+    <h1 id="review-heading" class="page-title">Opportunity review</h1>
+    <p>Review new submissions and follow up on requests for more details.</p>
+  </header>
+  <div class="filters" aria-label="Review queue" role="group">
+    <button
+      matButton="outlined"
+      type="button"
+      [attr.aria-pressed]="queue() === 'PENDING'"
+      (click)="selectQueue('PENDING')"
+    >
+      Awaiting review
+    </button>
+    <button
+      matButton="outlined"
+      type="button"
+      [attr.aria-pressed]="queue() === 'NEEDS_DETAILS'"
+      (click)="selectQueue('NEEDS_DETAILS')"
+    >
+      Waiting for details
+    </button>
+  </div>
+  @if (loading()) {
+    <p class="state" role="status">Loading submissions…</p>
+  } @else if (error()) {
+    <div class="state" role="alert">
+      <p>{{ error() }}</p>
+      <button matButton="outlined" type="button" (click)="load()">Try again</button>
+    </div>
+  } @else if (page(); as results) {
+    @if (!results.content.length) {
+      <p class="state">
+        {{
+          queue() === 'PENDING'
+            ? 'No submissions are waiting for review.'
+            : 'No submissions are waiting for details.'
+        }}
+      </p>
+    } @else {
+      <p class="count">
+        {{ results.totalElements }} {{ results.totalElements === 1 ? 'submission' : 'submissions' }}
+      </p>
+      <ul class="list">
+        @for (item of results.content; track item.opportunityId) {
+          <li>
+            <div class="item">
+              <span>{{ statusLabel(item.status) }}</span>
+              <h2>
+                <a [routerLink]="['/dashboard/admin/review', item.opportunityId]">
+                  {{ item.title }}
+                </a>
+              </h2>
+              <p>{{ item.companyName }} · {{ item.location }}</p>
+            </div>
+            <a
+              class="review-link"
+              [routerLink]="['/dashboard/admin/review', item.opportunityId]"
+              [attr.aria-label]="'Review ' + item.title"
+            >
+              Open submission →
+            </a>
+          </li>
+        }
+      </ul>
+    }
+    @if (results.totalPages > 1) {
+      <app-pagination
+        [page]="results.page + 1"
+        [length]="results.totalElements"
+        [pageSize]="results.size"
+        (pageChange)="load($event - 1)"
+      />
+    }
+  }
+</section>

@@ -1,0 +1,134 @@
+.panel {
+  max-width: 880px;
+  margin: clamp(1rem, 4vw, 3rem) auto;
+  width: calc(100% - 2rem);
+}
+h1 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+.intro p,
+.hint {
+  color: var(--muted);
+  line-height: 1.5;
+}
+form {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+fieldset {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+legend {
+  padding: 0 0.4rem;
+  font-weight: 750;
+}
+label,
+.label {
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+.label,
+.hint {
+  margin: 0;
+}
+.hint {
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+.required-mark {
+  color: var(--danger);
+  font-weight: 700;
+}
+label .hint,
+.label .hint {
+  margin-left: 0.25rem;
+}
+.row {
+  display: grid;
+  gap: 1rem;
+}
+.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+.skill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.skill:has(input:checked) {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+.declaration {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  line-height: 1.45;
+}
+input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+  margin: 0.1rem 0 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+.notice {
+  padding: 0.8rem 1rem;
+  margin: 0;
+  border-radius: var(--radius-md);
+  background: #f1f5f9;
+}
+.notice > p {
+  margin: 0 0 0.65rem;
+}
+.error {
+  color: var(--danger);
+  background: #fef2f2;
+}
+.success {
+  color: var(--success);
+  background: #ecfdf3;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.actions a,
+.success a {
+  color: var(--primary-hover);
+  font-weight: 700;
+}
+@media (max-width: 620px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+  fieldset {
+    padding: 0.75rem;
+  }
+}

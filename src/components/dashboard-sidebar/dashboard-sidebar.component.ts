@@ -1,26 +1,24 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { User } from '../../models/user.model';
-import { UserService } from '../../services/user.service';
-import { getApiErrorMessage } from '../../services/api-error.util';
+import { MatListModule } from '@angular/material/list';
+import { AuthService } from '../../services/auth.service';
+import { IconComponent, IconName } from '../icon.component';
 
 @Component({
   selector: 'app-dashboard-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, IconComponent, MatListModule],
   templateUrl: './dashboard-sidebar.component.html',
-  styleUrl: './dashboard-sidebar.component.scss'
+  styleUrl: './dashboard-sidebar.component.scss',
 })
-export class DashboardSidebarComponent implements OnInit {
-  private readonly users = inject(UserService);
-  private readonly destroyRef = inject(DestroyRef);
-  readonly user = signal<User | null>(null);
-  readonly error = signal('');
-  ngOnInit(): void {
-    this.users.getMe().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: user => this.user.set(user),
-      error: err => this.error.set(getApiErrorMessage(err))
-    });
-  }
+export class DashboardSidebarComponent {
+  readonly auth = inject(AuthService);
+  readonly links: ReadonlyArray<{ path: string; label: string; icon: IconName }> = [
+    { path: '', label: 'Overview', icon: 'overview' },
+    { path: 'my-posts', label: 'My opportunities', icon: 'posts' },
+    { path: 'profile', label: 'My profile', icon: 'profile' },
+    { path: 'notifications', label: 'Notifications', icon: 'bell' },
+    { path: 'reports', label: 'My reports', icon: 'flag' },
+    { path: 'settings', label: 'Preferences', icon: 'settings' },
+  ];
 }

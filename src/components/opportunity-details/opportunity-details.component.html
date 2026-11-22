@@ -1,0 +1,333 @@
+<div class="detail-page" [class.review-page]="adminReview">
+  <a
+    class="back-link"
+    [routerLink]="
+      adminReview
+        ? '/dashboard/admin/review'
+        : opportunity()?.opportunityType === 'WALK_IN'
+          ? '/walk-in-drives'
+          : '/jobs'
+    "
+  >
+    ←
+    {{
+      adminReview
+        ? 'Review queue'
+        : opportunity()?.opportunityType === 'WALK_IN'
+          ? 'Walk-in drives'
+          : 'Explore jobs'
+    }}
+  </a>
+
+  @if (loading()) {
+    <p class="state surface" role="status">Loading opportunity…</p>
+  } @else if (missing()) {
+    <section class="state surface unavailable">
+      <h1>Opportunity unavailable</h1>
+      <p>This opportunity may be under review, closed, or removed.</p>
+      <a
+        class="button primary-link"
+        [routerLink]="adminReview ? '/dashboard/admin/review' : '/jobs'"
+      >
+        {{ adminReview ? 'Back to review queue' : 'Browse opportunities' }}
+      </a>
+    </section>
+  } @else if (error()) {
+    <section class="state surface" role="alert">
+      <p>{{ error() }}</p>
+      <button class="outlined" type="button" (click)="retry()">Try again</button>
+    </section>
+  } @else if (opportunity(); as item) {
+    <article>
+      <header class="hero">
+        <div class="company-mark" aria-hidden="true">{{ item.companyName.charAt(0) }}</div>
+        <div class="hero-body">
+          <div class="tags">
+            <span>
+              {{
+                item.opportunityType === 'WALK_IN'
+                  ? 'Walk-in drive'
+                  : item.opportunityType === 'JOB'
+                    ? 'Job opening'
+                    : item.opportunityType.toLowerCase()
+              }}
+            </span>
+            @if (adminReview || item.status !== 'ACTIVE') {
+              <span class="review-tag">{{ statusLabel(item.status) }}</span>
+            }
+            @if (item.verified) {
+              <span class="verified">Verified</span>
+            }
+          </div>
+          <h1>{{ item.title }}</h1>
+          <p class="company">
+            {{ item.companyName }}
+            <span>·</span>
+            {{ item.location }}
+          </p>
+          @if (item.publishedAt) {
+            <p class="posted">Published {{ item.publishedAt | date: 'mediumDate' }}</p>
+          }
+        </div>
+      </header>
+
+      @if (feedback()) {
+        <p class="feedback" role="status">{{ feedback() }}</p>
+      }
+
+      <div class="columns">
+        <div class="body">
+          <section class="section surface">
+            <h2>About this opportunity</h2>
+            <p class="description">{{ item.description }}</p>
+            @if (item.roles.length) {
+              <h3>Roles</h3>
+              <ul class="pills">
+                @for (role of item.roles; track role.id) {
+                  <li>{{ role.name }}</li>
+                }
+              </ul>
+            }
+            @if (item.skills.length) {
+              <h3>Skills</h3>
+              <ul class="pills">
+                @for (skill of item.skills; track skill.id) {
+                  <li>{{ skill.name }}</li>
+                }
+              </ul>
+            }
+          </section>
+
+          @if (item.opportunityType === 'WALK_IN' && item.driveDate) {
+            <section class="section surface">
+              <h2>Walk-in schedule</h2>
+              <dl>
+                <div>
+                  <dt>Date</dt>
+                  <dd>{{ item.driveDate | date: 'fullDate' }}</dd>
+                </div>
+                <div>
+                  <dt>Time</dt>
+                  <dd>
+                    {{ item.driveStartTime?.slice(0, 5) }}–{{ item.driveEndTime?.slice(0, 5) }}
+                    {{ item.timeZoneId === 'Asia/Kolkata' ? 'IST' : item.timeZoneId }}
+                  </dd>
+                </div>
+                @if (item.venue) {
+                  <div>
+                    <dt>Venue</dt>
+                    <dd>
+                      {{ item.venue }}
+                      @if (item.venueAddress) {
+                        <br />
+                        {{ item.venueAddress }}
+                      }
+                    </dd>
+                  </div>
+                }
+                @if (adminReview && (item.contactName || item.contactEmail || item.contactPhone)) {
+                  <div>
+                    <dt>Hiring contact</dt>
+                    <dd>{{ item.contactName }} {{ item.contactEmail }} {{ item.contactPhone }}</dd>
+                  </div>
+                }
+                @if (adminReview && item.instructions) {
+                  <div>
+                    <dt>Instructions</dt>
+                    <dd>{{ item.instructions }}</dd>
+                  </div>
+                }
+              </dl>
+            </section>
+          }
+
+          @if (adminReview || item.status !== 'ACTIVE' || hasReviewNotes()) {
+            @if (item.statusHistory.length) {
+              <section class="section surface">
+                <h2>Review activity</h2>
+                <ol class="timeline">
+                  @for (entry of item.statusHistory; track $index) {
+                    <li>
+                      <strong>
+                        {{
+                          entry.previousStatus === 'NEEDS_DETAILS' && entry.newStatus === 'PENDING'
+                            ? 'Additional details submitted'
+                            : statusLabel(entry.newStatus)
+                        }}
+                      </strong>
+                      <time [attr.datetime]="entry.changedAt">
+                        {{ entry.changedAt | date: 'medium' }}
+                      </time>
+                      @if (entry.note) {
+                        <p class="description">{{ entry.note }}</p>
+                      }
+                    </li>
+                  }
+                </ol>
+              </section>
+            }
+          }
+
+          @if (item.canRespond) {
+            <section class="section surface">
+              <h2>Provide more details</h2>
+              <p>Your response goes to the review team.</p>
+              <form (submit)="$event.preventDefault(); sendReply(item)" class="review-form">
+                <label for="submitter-message">Additional details</label>
+                <textarea
+                  id="submitter-message"
+                  [formControl]="note"
+                  maxlength="1000"
+                  rows="4"
+                  [readOnly]="busy()"
+                ></textarea>
+                @if (actionError()) {
+                  <p class="action-error" role="alert">{{ actionError() }}</p>
+                }
+                <button type="submit" [disabled]="busy()">Send for review</button>
+              </form>
+            </section>
+          }
+        </div>
+
+        <aside class="facts">
+          @if (adminReview && item.status === 'PENDING') {
+            <section class="section surface decision">
+              <h2>Review submission</h2>
+              <form (submit)="$event.preventDefault(); saveDecision(item)" class="review-form">
+                <label for="review-decision">Decision</label>
+                <select
+                  id="review-decision"
+                  #selected
+                  [value]="decision()"
+                  [disabled]="busy()"
+                  (change)="decision.set($any(selected.value))"
+                >
+                  <option value="APPROVE">Approve and publish</option>
+                  <option value="REJECT">Reject submission</option>
+                  <option value="REQUEST_DETAILS">Request more details</option>
+                </select>
+                <label for="review-note">
+                  {{
+                    decision() === 'APPROVE'
+                      ? 'Note for the submitter (optional)'
+                      : 'Private message to the submitter'
+                  }}
+                </label>
+                <textarea
+                  id="review-note"
+                  [formControl]="note"
+                  maxlength="1000"
+                  rows="4"
+                  [readOnly]="busy()"
+                ></textarea>
+                @if (actionError()) {
+                  <p class="action-error" role="alert">{{ actionError() }}</p>
+                }
+                <button type="submit" [disabled]="busy()">
+                  {{
+                    busy()
+                      ? 'Recording…'
+                      : decision() === 'APPROVE'
+                        ? 'Approve and publish'
+                        : decision() === 'REJECT'
+                          ? 'Reject submission'
+                          : 'Send request'
+                  }}
+                </button>
+              </form>
+            </section>
+          }
+          <section class="section surface">
+            <h2>{{ adminReview ? 'Submission details' : 'At a glance' }}</h2>
+            <dl>
+              @if (submission(); as review) {
+                <div>
+                  <dt>Submitted by</dt>
+                  <dd>{{ review.submittedBy }}</dd>
+                </div>
+                <div>
+                  <dt>Submitted on</dt>
+                  <dd>{{ review.submittedAt | date: 'mediumDate' }}</dd>
+                </div>
+              }
+              <div>
+                <dt>Work mode</dt>
+                <dd>{{ item.workMode.replace('_', ' ').toLowerCase() }}</dd>
+              </div>
+              <div>
+                <dt>Employment</dt>
+                <dd>{{ item.employmentType.replace('_', ' ').toLowerCase() }}</dd>
+              </div>
+              <div>
+                <dt>Experience</dt>
+                <dd>
+                  {{
+                    item.minExperience === item.maxExperience
+                      ? item.minExperience
+                      : item.minExperience + '–' + item.maxExperience
+                  }}
+                  years
+                </dd>
+              </div>
+              @if (item.minSalary !== null || item.maxSalary !== null) {
+                <div>
+                  <dt>Salary</dt>
+                  <dd>
+                    {{
+                      item.minSalary ?? item.maxSalary
+                        | currency: item.currencyCode : 'symbol' : '1.0-0'
+                    }}
+                    @if (
+                      item.minSalary !== null &&
+                      item.maxSalary !== null &&
+                      item.minSalary !== item.maxSalary
+                    ) {
+                      – {{ item.maxSalary | currency: item.currencyCode : 'symbol' : '1.0-0' }}
+                    }
+                  </dd>
+                </div>
+              }
+              @if (item.applicationDeadline) {
+                <div>
+                  <dt>Apply by</dt>
+                  <dd>{{ item.applicationDeadline | date: 'mediumDate' }}</dd>
+                </div>
+              }
+            </dl>
+            @if (item.applicationUrl && item.status === 'ACTIVE' && !adminReview) {
+              <a
+                class="button primary-link"
+                [href]="item.applicationUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Apply now ↗
+              </a>
+            }
+            @if (item.applicationUrl && adminReview) {
+              <a
+                class="source-link"
+                [href]="item.applicationUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Application link ↗
+              </a>
+            }
+            @if (item.sourceUrl) {
+              <a
+                class="source-link"
+                [href]="item.sourceUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View original source ↗
+              </a>
+            }
+          </section>
+        </aside>
+      </div>
+    </article>
+  }
+</div>

@@ -1,0 +1,38 @@
+<div class="actions">
+  @if (auth.currentUser(); as user) {
+    <a matButton="filled" class="submit-drive" routerLink="/submit-walk-in-drive">Submit a drive</a>
+    <app-notification-bell />
+
+    <div class="account-group">
+      <a matButton class="account" routerLink="/dashboard/profile" aria-label="My profile">
+        <span class="avatar" aria-hidden="true">
+          {{ (user.displayName || 'J').charAt(0).toUpperCase() }}
+        </span>
+        <span class="user-name">{{ user.displayName || 'Account' }}</span>
+      </a>
+      <button
+        matIconButton
+        type="button"
+        [matMenuTriggerFor]="options"
+        aria-label="Account options"
+      >
+        <span class="chevron" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <mat-menu #options="matMenu" xPosition="before">
+      <a mat-menu-item routerLink="/dashboard/settings">Preferences</a>
+      <a mat-menu-item routerLink="/submit-walk-in-drive">Submit a drive</a>
+      <button mat-menu-item type="button" [disabled]="signingOut()" (click)="logout()">
+        {{ signingOut() ? 'Signing out…' : 'Sign out' }}
+      </button>
+    </mat-menu>
+  } @else if (auth.sessionReady()) {
+    <a matButton="outlined" routerLink="/login">Log in</a>
+    <a matButton="filled" routerLink="/register">Get started</a>
+  }
+</div>
+
+@if (error() || auth.sessionError(); as message) {
+  <p class="auth-error" role="alert">{{ message }}</p>
+}

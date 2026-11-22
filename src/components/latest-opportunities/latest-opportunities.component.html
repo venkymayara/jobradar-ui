@@ -1,7 +1,23 @@
 <section class="section">
-  <div class="heading"><div><span class="eyebrow">FRESHLY POSTED</span><h2>Latest opportunities</h2><p>Explore recently shared openings from the community.</p></div><a routerLink="/jobs">View all jobs →</a></div>
-  @if (loading) { <p role="status" class="state">Loading opportunities…</p> }
-  @else if (error) { <p role="alert" class="state error">{{ error }}</p> }
-  @else if (jobs.length) { <div class="list">@for (job of jobs; track job.opportunityId) {<app-opportunity-card [opportunity]="job"/>}</div> }
-  @else { <p class="state">No opportunities have been posted yet.</p> }
+  <div class="heading">
+    <div>
+      <span class="eyebrow">FRESHLY POSTED</span>
+      <h2>Latest opportunities</h2>
+      <p>Explore recently shared openings from the community.</p>
+    </div>
+    <a routerLink="/jobs">View all jobs →</a>
+  </div>
+  @if (loading) {
+    <p role="status" class="state">Loading opportunities…</p>
+  } @else if (error) {
+    <p role="alert" class="state error">{{ error }}</p>
+  } @else if (jobs.length) {
+    <div class="list">
+      @for (job of jobs; track job.opportunityId) {
+        <app-opportunity-card [opportunity]="job" />
+      }
+    </div>
+  } @else {
+    <p class="state">No opportunities have been posted yet.</p>
+  }
 </section>

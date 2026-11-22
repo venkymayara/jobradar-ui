@@ -1,0 +1,323 @@
+<section class="panel surface" aria-labelledby="walk-in-heading">
+  <header class="intro">
+    <h1 id="walk-in-heading">Submit a walk-in drive</h1>
+    <p>
+      Share a hiring event with the community. A moderator reviews your submission before it appears
+      publicly.
+    </p>
+  </header>
+  @if (loading()) {
+    <p class="notice" role="status">Loading companies, locations, roles, and skills…</p>
+  } @else if (optionsError()) {
+    <div class="notice error" role="alert">
+      <p>{{ optionsError() }}</p>
+      <button class="outlined" type="button" (click)="loadOptions()">Try again</button>
+    </div>
+  } @else if (success()) {
+    <div class="notice success">
+      <p role="status">{{ success() }}</p>
+      <a routerLink="/dashboard/my-posts">Track your submission</a>
+    </div>
+  } @else {
+    <form class="fields" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <p class="hint">
+        <span class="required-mark">*</span>
+        Required field
+      </p>
+      <fieldset [disabled]="saving()">
+        <legend>Job and company</legend>
+        <div class="row two">
+          <label>
+            <span>
+              Job title
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <input formControlName="title" placeholder="e.g. Java Developer" required />
+            @if (isInvalid('title')) {
+              <small class="field-error">Enter a title up to 200 characters.</small>
+            }
+          </label>
+          <label>
+            <span>
+              Job role
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <select formControlName="roleId" required>
+              <option [ngValue]="0" disabled>Select a role</option>
+              @for (role of rolesList(); track role.jobRoleId) {
+                <option [ngValue]="role.jobRoleId">{{ role.roleName }}</option>
+              }
+            </select>
+            @if (isInvalid('roleId')) {
+              <small class="field-error">Select a job role.</small>
+            }
+          </label>
+        </div>
+        <div class="row two">
+          @if (companiesList().length) {
+            <label>
+              Company
+              <select formControlName="companyId">
+                <option [ngValue]="0">Enter a company name</option>
+                @for (company of companiesList(); track company.companyId) {
+                  <option [ngValue]="company.companyId">{{ company.companyName }}</option>
+                }
+              </select>
+            </label>
+          }
+          @if (!form.controls.companyId.value) {
+            <label>
+              <span>
+                Company name
+                <span class="required-mark" aria-hidden="true">*</span>
+              </span>
+              <input
+                formControlName="companyName"
+                placeholder="Company hosting the drive"
+                required
+              />
+              @if (isInvalid('companyName')) {
+                <small class="field-error">Enter a company name up to 160 characters.</small>
+              }
+            </label>
+          }
+        </div>
+        <label>
+          <span>
+            Job description
+            <span class="required-mark" aria-hidden="true">*</span>
+          </span>
+          <textarea
+            formControlName="description"
+            rows="4"
+            placeholder="Describe the role and who should attend."
+            required
+          ></textarea>
+          @if (isInvalid('description')) {
+            <small class="field-error">Add a description up to 10,000 characters.</small>
+          }
+        </label>
+        <div class="row two">
+          <label>
+            <span>
+              Minimum experience (years)
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <input
+              type="number"
+              formControlName="minExperience"
+              min="0"
+              max="60"
+              step="1"
+              required
+            />
+            @if (isInvalid('minExperience')) {
+              <small class="field-error">Enter a whole number from 0 to 60.</small>
+            }
+          </label>
+          <label>
+            <span>
+              Maximum experience (years)
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <input
+              type="number"
+              formControlName="maxExperience"
+              min="0"
+              max="60"
+              step="1"
+              required
+            />
+            @if (isInvalid('maxExperience')) {
+              <small class="field-error">Enter a whole number from 0 to 60.</small>
+            }
+          </label>
+        </div>
+        @if (skillsList().length) {
+          <div role="group" aria-labelledby="skills-label">
+            <p id="skills-label" class="label">
+              Skills
+              <span class="hint">Optional</span>
+            </p>
+            <div class="skills">
+              @for (skill of skillsList(); track skill.skillId) {
+                <label class="skill">
+                  <input
+                    type="checkbox"
+                    [checked]="form.controls.skillIds.value.includes(skill.skillId)"
+                    (change)="selectSkill(skill.skillId, $any($event.target).checked)"
+                  />
+                  {{ skill.skillName }}
+                </label>
+              }
+            </div>
+          </div>
+        }
+      </fieldset>
+
+      <fieldset [disabled]="saving()">
+        <legend>Schedule and venue</legend>
+        <p class="hint">Enter the event times in India Standard Time (IST).</p>
+        <div class="row three">
+          <label>
+            <span>
+              Walk-in date
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <input type="date" formControlName="driveDate" [min]="minDate" required />
+            @if (isInvalid('driveDate')) {
+              <small class="field-error">Select the event date.</small>
+            }
+          </label>
+          <label>
+            <span>
+              Start time
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <input type="time" formControlName="driveStartTime" required />
+            @if (isInvalid('driveStartTime')) {
+              <small class="field-error">Select a start time.</small>
+            }
+          </label>
+          <label>
+            <span>
+              End time
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <input type="time" formControlName="driveEndTime" required />
+            @if (isInvalid('driveEndTime')) {
+              <small class="field-error">Select an end time.</small>
+            }
+          </label>
+        </div>
+        <div class="row two">
+          <label>
+            <span>
+              City / location
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <select formControlName="locationId" required>
+              <option [ngValue]="0" disabled>Select a location</option>
+              @for (location of locationsList(); track location.locationId) {
+                <option [ngValue]="location.locationId">{{ location.displayName }}</option>
+              }
+            </select>
+            @if (isInvalid('locationId')) {
+              <small class="field-error">Select a location.</small>
+            }
+          </label>
+          <label>
+            <span>
+              Venue name
+              <span class="required-mark" aria-hidden="true">*</span>
+            </span>
+            <input formControlName="venue" placeholder="Office, campus, or hiring venue" required />
+            @if (isInvalid('venue')) {
+              <small class="field-error">Enter a venue up to 180 characters.</small>
+            }
+          </label>
+        </div>
+        <label>
+          <span>
+            Venue address
+            <span class="hint">Optional</span>
+          </span>
+          <input formControlName="venueAddress" />
+          @if (isInvalid('venueAddress')) {
+            <small class="field-error">Use 500 characters or fewer.</small>
+          }
+        </label>
+      </fieldset>
+
+      <fieldset [disabled]="saving()">
+        <legend>Source and contact</legend>
+        <label>
+          <span>
+            Source URL
+            <span class="required-mark" aria-hidden="true">*</span>
+          </span>
+          <input
+            type="url"
+            formControlName="sourceUrl"
+            required
+            placeholder="https://company.example/hiring-event"
+          />
+          @if (isInvalid('sourceUrl')) {
+            <small class="field-error">Enter a valid HTTP or HTTPS link.</small>
+          }
+        </label>
+        <div
+          role="group"
+          aria-labelledby="hiring-contact-label"
+          aria-describedby="hiring-contact-hint"
+          class="row"
+        >
+          <div>
+            <p id="hiring-contact-label" class="label">
+              Hiring contact
+              <span class="required-mark" aria-hidden="true">*</span>
+            </p>
+            <p id="hiring-contact-hint" class="hint">
+              Provide at least one email address or phone number you have permission to share.
+            </p>
+          </div>
+          <div class="row two">
+            <label>
+              Contact email
+              <input type="email" formControlName="contactEmail" />
+              @if (isInvalid('contactEmail')) {
+                <small class="field-error">Enter a valid email address.</small>
+              }
+            </label>
+            <label>
+              Contact phone
+              <input type="tel" formControlName="contactPhone" />
+              @if (isInvalid('contactPhone')) {
+                <small class="field-error">Enter a valid phone number.</small>
+              }
+            </label>
+          </div>
+        </div>
+        <label>
+          <span>
+            Instructions
+            <span class="hint">Optional</span>
+          </span>
+          <textarea
+            formControlName="instructions"
+            rows="3"
+            placeholder="Documents to bring, arrival instructions, or eligibility requirements"
+          ></textarea>
+          @if (isInvalid('instructions')) {
+            <small class="field-error">Use 2,000 characters or fewer.</small>
+          }
+        </label>
+      </fieldset>
+
+      <label class="declaration">
+        <input
+          type="checkbox"
+          formControlName="declaration"
+          required
+          [attr.aria-disabled]="saving()"
+        />
+        <span>
+          I confirm the event details are accurate and I have permission to share them.
+          <span class="required-mark" aria-hidden="true">*</span>
+        </span>
+      </label>
+      @if (isInvalid('declaration')) {
+        <small class="field-error">Confirm the declaration before submitting.</small>
+      }
+      @if (error()) {
+        <p class="notice error" role="alert">{{ error() }}</p>
+      }
+      <div class="actions">
+        <button type="submit" [disabled]="saving()">
+          {{ saving() ? 'Submitting…' : 'Submit for review' }}
+        </button>
+        <a routerLink="/dashboard/my-posts">Cancel</a>
+      </div>
+    </form>
+  }
+</section>

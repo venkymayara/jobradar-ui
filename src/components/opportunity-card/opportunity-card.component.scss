@@ -1,1 +1,68 @@
-.card{padding:20px;border:1px solid #e7edf6;border-radius:14px;background:white}.top,.bottom{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}h3{font-size:17px;margin:0 0 6px}h3 a{color:#17243d;text-decoration:none}h3 a:hover{color:#2563eb}.company{margin:0;color:#718096;font-size:14px}.badge{background:#eff6ff;color:#1d4ed8;padding:6px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}.meta{display:flex;gap:18px;flex-wrap:wrap;color:#64748b;font-size:12px;margin:18px 0}.skills{display:flex;gap:7px;flex-wrap:wrap}.skills span{background:#f1f5f9;color:#475569;padding:6px 9px;border-radius:6px;font-size:11px}.bottom{border-top:1px solid #edf1f7;padding-top:15px;margin-top:18px;align-items:center}.bottom strong{font-size:13px;color:#334155}.bottom a{font-size:13px;font-weight:700;color:#2563eb;text-decoration:none}
+.top,
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+h3 {
+  font-size: 17px;
+  margin: 0 0 6px;
+}
+h3 a {
+  color: #17243d;
+  text-decoration: none;
+}
+h3 a:hover {
+  color: #2563eb;
+}
+.company {
+  margin: 0;
+  color: #718096;
+  font-size: 14px;
+}
+.badge {
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.meta {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  color: #64748b;
+  font-size: 12px;
+  margin: 18px 0;
+}
+.skills {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.skills span {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 6px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+.bottom {
+  border-top: 1px solid #edf1f7;
+  padding-top: 15px;
+  margin-top: 18px;
+  align-items: center;
+}
+.bottom strong {
+  font-size: 13px;
+  color: #334155;
+}
+.bottom a {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2563eb;
+  text-decoration: none;
+}

@@ -8,6 +8,10 @@ import { OpportunityCardComponent } from '../opportunity-card/opportunity-card.c
   standalone: true,
   imports: [OpportunityCardComponent, RouterLink],
   templateUrl: './latest-opportunities.component.html',
-  styleUrl: './latest-opportunities.component.scss'
+  styleUrl: './latest-opportunities.component.scss',
 })
-export class LatestOpportunitiesComponent { @Input() jobs: Opportunity[] = []; @Input() loading = false; @Input() error = ''; }
+export class LatestOpportunitiesComponent {
+  @Input() jobs: Opportunity[] = [];
+  @Input() loading = false;
+  @Input() error = '';
+}

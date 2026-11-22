@@ -8,6 +8,10 @@ import { WalkInCardComponent } from '../walk-in-card/walk-in-card.component';
   standalone: true,
   imports: [WalkInCardComponent, RouterLink],
   templateUrl: './walk-in-preview.component.html',
-  styleUrl: './walk-in-preview.component.scss'
+  styleUrl: './walk-in-preview.component.scss',
 })
-export class WalkInPreviewComponent { @Input() drives: WalkInDrive[] = []; @Input() loading = false; @Input() error = ''; }
+export class WalkInPreviewComponent {
+  @Input() drives: WalkInDrive[] = [];
+  @Input() loading = false;
+  @Input() error = '';
+}

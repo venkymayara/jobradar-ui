@@ -1,1 +1,47 @@
-<section class="hero"><div class="copy"><span class="eyebrow">YOUR NEXT OPPORTUNITY STARTS HERE</span><h1>Find work that moves<br><em>you forward.</em></h1><p>Discover jobs, walk-in drives and opportunities shared by the community.</p><form (ngSubmit)="search()"><label class="field"><span>⌕</span><input name="keyword" [(ngModel)]="keyword" placeholder="Job title, skill or company"></label><label class="field location"><span>⌖</span><input name="location" [(ngModel)]="location" placeholder="City" /></label><button type="submit">Search jobs →</button></form><small>Popular: Java Developer · Angular · Data Engineer · Python</small></div><div class="visual"><div class="visual-card"><span class="spark">✦</span><strong>New opportunities,<br>every day.</strong><p>One place to discover what's next.</p><div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div></section>
+<section class="hero">
+  <div class="copy">
+    <span class="eyebrow">YOUR NEXT OPPORTUNITY STARTS HERE</span>
+    <h1>
+      Find work that moves
+      <br />
+      <em>you forward.</em>
+    </h1>
+    <p>Discover jobs, walk-in drives and opportunities shared by the community.</p>
+    <form (ngSubmit)="search()">
+      <label class="field">
+        <app-icon name="search" />
+        <input
+          name="keyword"
+          [(ngModel)]="keyword"
+          aria-label="Job title, skill or company"
+          placeholder="Job title, skill or company"
+        />
+      </label>
+      <label class="field location">
+        <app-icon name="location" />
+        <input name="location" [(ngModel)]="location" aria-label="City" placeholder="City" />
+      </label>
+      <button type="submit">Search jobs →</button>
+    </form>
+    <small>Popular: Java Developer · Angular · Data Engineer · Python</small>
+  </div>
+  <div class="visual">
+    <div class="visual-card">
+      <span class="spark">✦</span>
+      <strong>
+        New opportunities,
+        <br />
+        every day.
+      </strong>
+      <p>One place to discover what's next.</p>
+      <div class="bars">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
+    </div>
+  </div>
+</section>

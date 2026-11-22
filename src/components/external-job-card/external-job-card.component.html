@@ -1,0 +1,20 @@
+<article class="card surface">
+  <div class="badge">{{ job.provider }} · External job</div>
+  <h3>{{ job.title }}</h3>
+  <p class="company">{{ job.companyName }}</p>
+  <p>
+    {{ job.location || 'Remote' }}
+    @if (job.workMode) {
+      · {{ job.workMode === 'ON_SITE' ? 'On-site' : job.workMode.toLowerCase() }}
+    }
+  </p>
+  @if (job.salary) {
+    <p>{{ job.salary }}</p>
+  }
+  @if (job.skills.length) {
+    <p>{{ job.skills.slice(0, 4).join(' · ') }}</p>
+  }
+  <a [href]="job.applicationUrl" target="_blank" rel="noopener noreferrer">
+    Apply on {{ job.provider }} ↗
+  </a>
+</article>

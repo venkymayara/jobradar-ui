@@ -1,0 +1,32 @@
+<div class="filters surface fields">
+  <label>
+    City
+    <input name="city" [(ngModel)]="city" placeholder="e.g. Hyderabad" />
+  </label>
+  <label>
+    Date
+    <select name="date" [(ngModel)]="date">
+      <option value="">All upcoming dates</option>
+      <option value="TODAY">Today</option>
+      <option value="THIS_WEEK">This week</option>
+    </select>
+  </label>
+  <label>
+    Role
+    <input name="role" [(ngModel)]="role" placeholder="e.g. Developer" />
+  </label>
+  <label>
+    Skills
+    <input name="skills" [(ngModel)]="skills" placeholder="Java, SQL" />
+  </label>
+  <label>
+    Experience
+    <select name="experience" [(ngModel)]="experience">
+      <option value="">Any experience</option>
+      <option value="0-2">0–2 years</option>
+      <option value="2-4">2–4 years</option>
+      <option value="4-10">4+ years</option>
+    </select>
+  </label>
+  <button type="button" (click)="apply()">Apply filters</button>
+</div>

@@ -6,8 +6,11 @@ import { WalkInDrive } from '../../models/walk-in.model';
 @Component({
   selector: 'app-walk-in-card',
   standalone: true,
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, IconComponent],
   templateUrl: './walk-in-card.component.html',
-  styleUrl: './walk-in-card.component.scss'
+  styleUrl: './walk-in-card.component.scss',
 })
-export class WalkInCardComponent { @Input({ required: true }) drive!: WalkInDrive; }
+export class WalkInCardComponent {
+  @Input({ required: true }) drive!: WalkInDrive;
+}
+import { IconComponent } from '../icon.component';

@@ -1,0 +1,97 @@
+<section class="dashboard-page surface" aria-labelledby="my-opportunities-heading">
+  <header class="dashboard-heading">
+    <div>
+      <h1 class="page-title" id="my-opportunities-heading">My opportunities</h1>
+      <p>Manage the opportunities you submit and the openings you save.</p>
+    </div>
+    <a matButton="filled" routerLink="/submit-walk-in-drive">Submit a walk-in drive</a>
+  </header>
+
+  <nav class="dashboard-actions" aria-label="Opportunity views">
+    <a
+      matButton="outlined"
+      routerLink="/dashboard/my-posts"
+      [attr.aria-current]="!isSavedView() ? 'page' : null"
+    >
+      Submissions
+    </a>
+    <a
+      matButton="outlined"
+      routerLink="/dashboard/my-posts"
+      [queryParams]="{ view: 'saved' }"
+      [attr.aria-current]="isSavedView() ? 'page' : null"
+    >
+      Saved opportunities
+    </a>
+  </nav>
+
+  @if (isSavedView() && removalError()) {
+    <p class="dashboard-state error" role="alert">{{ removalError() }}</p>
+  }
+
+  @if (results.isLoading()) {
+    <p class="state" role="status">Loading opportunities…</p>
+  } @else if (results.error()) {
+    <div class="state" role="alert">
+      <p>
+        {{
+          isSavedView()
+            ? 'Saved opportunities could not be loaded.'
+            : 'Your submissions could not be loaded.'
+        }}
+      </p>
+      <button matButton="outlined" type="button" (click)="results.reload()">Try again</button>
+    </div>
+  } @else if (results.value(); as page) {
+    @if (page.content.length) {
+      <div class="list">
+        @for (item of page.content; track item.opportunityId) {
+          <article class="item">
+            @if (!isSavedView()) {
+              <div class="submission-status">
+                <span [class.needs-details]="item.status === 'NEEDS_DETAILS'">
+                  {{ statusLabel(item.status) }}
+                </span>
+                @if (item.status === 'NEEDS_DETAILS') {
+                  <a [routerLink]="['/opportunities', item.opportunityId]">Respond to reviewer →</a>
+                }
+              </div>
+            }
+
+            <app-opportunity-card [opportunity]="item" />
+
+            @if (isSavedView()) {
+              <button
+                class="remove"
+                matButton="outlined"
+                type="button"
+                [disabled]="removing() !== null"
+                (click)="removeSaved(item.opportunityId)"
+              >
+                {{ removing() === item.opportunityId ? 'Removing…' : 'Remove saved' }}
+              </button>
+            }
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="state">
+        {{
+          isSavedView()
+            ? 'You have no saved opportunities on this page.'
+            : 'You have no submissions on this page.'
+        }}
+      </p>
+    }
+
+    @if (page.totalPages > 1 || page.page > 0) {
+      <app-pagination
+        [page]="page.page + 1"
+        [length]="page.totalElements"
+        [pageSize]="page.size"
+        [disabled]="removing() !== null"
+        (pageChange)="changePage($event)"
+      />
+    }
+  }
+</section>

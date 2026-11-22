@@ -1,0 +1,29 @@
+<section class="dashboard-page surface">
+  <header class="dashboard-heading">
+    <h1 class="page-title">My reports</h1>
+    <p>Review the status of reports you have submitted.</p>
+  </header>
+  @if (loading()) {
+    <p class="state" role="status">Loading…</p>
+  } @else if (error()) {
+    <p class="state" role="alert">{{ error() }}</p>
+  } @else if (!reports().length) {
+    <p class="state">You have not submitted any reports.</p>
+  } @else {
+    @for (report of reports(); track report.reportId) {
+      <article class="report">
+        <div>
+          <h2>{{ report.opportunityTitle }}</h2>
+          <p>{{ report.reason }}</p>
+          <small>{{ report.createdAt | date: 'medium' }}</small>
+          @if (report.reviewedAt) {
+            <small>· Reviewed {{ report.reviewedAt | date: 'mediumDate' }}</small>
+          }
+        </div>
+        <span class="report-status" [class.open]="report.status === 'OPEN'">
+          {{ report.status.replaceAll('_', ' ').toLowerCase() }}
+        </span>
+      </article>
+    }
+  }
+</section>
